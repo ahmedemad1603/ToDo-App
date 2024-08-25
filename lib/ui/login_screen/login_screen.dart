@@ -1,16 +1,27 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:todo_app/style/dialogue_utils/dialogue_utils.dart';
+import 'package:todo_app/ui/home_screen/home_screen.dart';
 import 'package:todo_app/ui/register_screen/register_screen.dart';
+import '../../firebase_error_codes.dart';
 import '../../style/constants/constants.dart';
 import '../../style/reusable_components/custom_form_field.dart';
 
-class LoginScreen extends StatelessWidget
+class LoginScreen extends StatefulWidget
 {
   static const String routeName = "Login Screen";
 
   LoginScreen({super.key});
 
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
   TextEditingController emailController = TextEditingController();
+
   TextEditingController passwordController = TextEditingController();
+
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   @override
@@ -57,6 +68,7 @@ class LoginScreen extends StatelessWidget
                     }
                 ),
                 CustomFormField(label: "Password", isPassword: true, controller: passwordController,
+                    action: TextInputAction.done,
                     validator: (value){
                       if(value == null || value.isEmpty)
                       {return "Please enter your password";}
@@ -108,9 +120,43 @@ class LoginScreen extends StatelessWidget
     );
   }
 
-  login()
+  login() async
   {
-    formKey.currentState?.validate();
+    if(formKey.currentState?.validate()??false)
+    {
+      try
+      {
+        DialogueUtils.showLoadingDialogue(context);
+        final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+            email: emailController.text.trim(),
+            password: passwordController.text
+        );
+        Navigator.pop(context);
+        Navigator.pushReplacementNamed(context, HomeScreen.routeName);
+      }
+      on FirebaseAuthException catch (error)
+      {
+        if (error.code == userNotFound)
+        {
+          Navigator.pop(context);
+          DialogueUtils.showMessageDialogue(context,
+              message: "No user found for that email.",
+              onPress: (){
+                Navigator.pop(context);
+              }
+          );
+        }
+        else if (error.code == wrongPassword)
+        {
+          Navigator.pop(context);
+          DialogueUtils.showMessageDialogue(context,
+              message: "Wrong password provided for that user.",
+              onPress: (){
+                Navigator.pop(context);
+              }
+          );
+        }
+      }
+    }
   }
-
 }
