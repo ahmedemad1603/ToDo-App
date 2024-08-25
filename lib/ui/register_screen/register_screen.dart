@@ -1,18 +1,32 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:todo_app/firebase_error_codes.dart';
+import 'package:todo_app/style/dialogue_utils/dialogue_utils.dart';
 import 'package:todo_app/style/reusable_components/custom_form_field.dart';
+import 'package:todo_app/ui/home_screen/home_screen.dart';
 import '../../style/constants/constants.dart';
 
-class RegisterScreen extends StatelessWidget
+class RegisterScreen extends StatefulWidget
 {
   static const String routeName = "Register Screen";
 
   RegisterScreen({super.key});
 
+  @override
+  State<RegisterScreen> createState() => _RegisterScreenState();
+}
+
+class _RegisterScreenState extends State<RegisterScreen> {
   TextEditingController fullNameController = TextEditingController();
+
   TextEditingController emailController = TextEditingController();
+
   TextEditingController phoneNumberController = TextEditingController();
+
   TextEditingController passwordController = TextEditingController();
+
   TextEditingController passwordReconfirmController = TextEditingController();
+
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   @override
@@ -85,7 +99,7 @@ class RegisterScreen extends StatelessWidget
                       return null;
                     }
                 ),
-                CustomFormField(label: "Password Re-Confirmation", action: TextInputAction.done, isPassword: true,
+                CustomFormField(label: "Password Confirmation", action: TextInputAction.done, isPassword: true,
                   controller: passwordReconfirmController,
                   validator: (value){
                     if(value == null || value.isEmpty)
@@ -126,8 +140,58 @@ class RegisterScreen extends StatelessWidget
     );
   }
 
-  createAccount()
+  createAccount() async
   {
-    formKey.currentState?.validate();
+    if(formKey.currentState?.validate()??false)
+      {
+        try
+        {
+          DialogueUtils.showLoadingDialogue(context);
+          final credential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+            email: emailController.text.trim(),
+            password: passwordController.text,
+          );
+          Navigator.pop(context);
+          DialogueUtils.showMessageDialogue(context,
+              message: "Account created successfully",
+              onPress: (){
+                Navigator.pushReplacementNamed(context, HomeScreen.routeName);
+              }
+          );
+        }
+        on FirebaseAuthException catch (error)
+        {
+          if (error.code == weakPassword)
+          {
+            Navigator.pop(context);
+            DialogueUtils.showMessageDialogue(context,
+                message: "The password provided is too weak.",
+                onPress: (){
+                  Navigator.pop(context);
+                }
+            );
+          }
+          else if (error.code == usedEmail)
+          {
+            Navigator.pop(context);
+            DialogueUtils.showMessageDialogue(context,
+                message: "The account already exists for that email.",
+                onPress: (){
+                  Navigator.pop(context);
+                }
+            );
+          }
+        }
+        catch (error)
+        {
+          Navigator.pop(context);
+          DialogueUtils.showMessageDialogue(context,
+              message: "${error.toString()}",
+              onPress: (){
+                Navigator.pop(context);
+              }
+          );
+        }
+      }
   }
 }

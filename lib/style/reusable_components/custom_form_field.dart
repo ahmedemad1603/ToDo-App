@@ -55,7 +55,10 @@ class _CustomFormFieldState extends State<CustomFormField> {
                 ),
                 color: Theme.of(context).colorScheme.primary,
             )
-                : null
+                : null,
+            focusedBorder: const UnderlineInputBorder(
+              borderSide: BorderSide(color: Colors.blue)
+            )
           )
     );
   }
