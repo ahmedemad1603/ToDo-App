@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:todo_app/firebase_error_codes.dart';
+import 'package:todo_app/firebase/firebase_error_codes.dart';
+import 'package:todo_app/firebase/firestore_helper.dart';
 import 'package:todo_app/style/dialogue_utils/dialogue_utils.dart';
 import 'package:todo_app/style/reusable_components/custom_form_field.dart';
 import 'package:todo_app/ui/home_screen/home_screen.dart';
@@ -151,6 +152,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
             email: emailController.text.trim(),
             password: passwordController.text,
           );
+
+          FirestoreHelper.addUser(
+              emailController.text,
+              fullNameController.text,
+              credential.user!.uid
+          );
+
           Navigator.pop(context);
           DialogueUtils.showMessageDialogue(context,
               message: "Account created successfully",
@@ -158,6 +166,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 Navigator.pushReplacementNamed(context, HomeScreen.routeName);
               }
           );
+
         }
         on FirebaseAuthException catch (error)
         {

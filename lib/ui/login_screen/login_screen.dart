@@ -1,11 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:todo_app/firebase/firestore_helper.dart';
 import 'package:todo_app/style/dialogue_utils/dialogue_utils.dart';
 import 'package:todo_app/ui/home_screen/home_screen.dart';
 import 'package:todo_app/ui/register_screen/register_screen.dart';
-import '../../firebase_error_codes.dart';
+import '../../firebase/firebase_error_codes.dart';
 import '../../style/constants/constants.dart';
 import '../../style/reusable_components/custom_form_field.dart';
+import 'package:todo_app/model/user.dart' as MyUser;
 
 class LoginScreen extends StatefulWidget
 {
@@ -131,8 +133,12 @@ class _LoginScreenState extends State<LoginScreen> {
             email: emailController.text.trim(),
             password: passwordController.text
         );
+
+        MyUser.User? user = await FirestoreHelper.getUser(credential.user!.uid);
+
         Navigator.pop(context);
         Navigator.pushReplacementNamed(context, HomeScreen.routeName);
+
       }
       on FirebaseAuthException catch (error)
       {
