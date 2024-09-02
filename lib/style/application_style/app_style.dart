@@ -31,8 +31,9 @@ class AppStyle
         seedColor: lightPrimaryColor,
         primary: lightPrimaryColor
     ),
-    textTheme: const TextTheme(
-      labelSmall: TextStyle(color: Colors.white, fontSize: 15)
+    textTheme: TextTheme(
+      labelSmall: const TextStyle(color: Colors.white, fontSize: 15),
+      titleLarge: TextStyle(fontWeight: FontWeight.w700, fontSize: 18, color: lightPrimaryColor)
     ),
     useMaterial3: false,
   );
