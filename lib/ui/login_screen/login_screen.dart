@@ -1,5 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:todo_app/auth_provider.dart';
 import 'package:todo_app/firebase/firestore_helper.dart';
 import 'package:todo_app/style/dialogue_utils/dialogue_utils.dart';
 import 'package:todo_app/ui/home_screen/home_screen.dart';
@@ -40,6 +42,7 @@ class _LoginScreenState extends State<LoginScreen> {
         resizeToAvoidBottomInset: false,
         backgroundColor: Colors.transparent,
         appBar: AppBar(
+          elevation: 0,
           backgroundColor: Colors.transparent,
           title: const Text("Login"),
           titleTextStyle: const TextStyle(
@@ -124,6 +127,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   login() async
   {
+    AuthUserProvider provider = Provider.of<AuthUserProvider>(context, listen: false);
     if(formKey.currentState?.validate()??false)
     {
       try
@@ -135,6 +139,8 @@ class _LoginScreenState extends State<LoginScreen> {
         );
 
         MyUser.User? user = await FirestoreHelper.getUser(credential.user!.uid);
+
+        provider.setUser(credential.user!, user!);
 
         Navigator.pop(context);
         Navigator.pushReplacementNamed(context, HomeScreen.routeName);

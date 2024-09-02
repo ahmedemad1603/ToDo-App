@@ -1,11 +1,14 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:todo_app/firebase/firebase_error_codes.dart';
 import 'package:todo_app/firebase/firestore_helper.dart';
 import 'package:todo_app/style/dialogue_utils/dialogue_utils.dart';
 import 'package:todo_app/style/reusable_components/custom_form_field.dart';
 import 'package:todo_app/ui/home_screen/home_screen.dart';
+import '../../auth_provider.dart';
 import '../../style/constants/constants.dart';
+import 'package:todo_app/model/user.dart' as MyUser;
 
 class RegisterScreen extends StatefulWidget
 {
@@ -44,6 +47,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         resizeToAvoidBottomInset: false,
         backgroundColor: Colors.transparent,
         appBar: AppBar(
+          elevation: 0,
           backgroundColor: Colors.transparent,
           iconTheme: const IconThemeData(
             color: Colors.white
@@ -143,6 +147,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   createAccount() async
   {
+    AuthUserProvider provider = Provider.of<AuthUserProvider>(context, listen: false);
     if(formKey.currentState?.validate()??false)
       {
         try
@@ -159,11 +164,20 @@ class _RegisterScreenState extends State<RegisterScreen> {
               credential.user!.uid
           );
 
+          MyUser.User user = MyUser.User(
+            email: emailController.text.trim(),
+            fullname: fullNameController.text,
+            id: credential.user!.uid
+          );
+          
+          provider.setUser(credential.user!, user);
+
           Navigator.pop(context);
           DialogueUtils.showMessageDialogue(context,
               message: "Account created successfully",
               onPress: (){
-                Navigator.pushReplacementNamed(context, HomeScreen.routeName);
+                Navigator.pop(context);
+                Navigator.pushNamedAndRemoveUntil(context, HomeScreen.routeName, (route) => false);
               }
           );
 
