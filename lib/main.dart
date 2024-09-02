@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:todo_app/auth_provider.dart';
 import 'package:todo_app/style/application_style/app_style.dart';
 import 'package:todo_app/ui/home_screen/home_screen.dart';
 import 'package:todo_app/ui/login_screen/login_screen.dart';
 import 'package:todo_app/ui/register_screen/register_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:todo_app/ui/splash_screen/splash_screen.dart';
 import 'firebase_options.dart';
 
 void main() async
@@ -12,7 +15,10 @@ void main() async
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(const MyApp());
+  runApp(ChangeNotifierProvider(
+      create: (context) => AuthUserProvider(),
+      child: const MyApp())
+  );
 }
 
 class MyApp extends StatelessWidget
@@ -30,9 +36,10 @@ class MyApp extends StatelessWidget
       routes: {
         LoginScreen.routeName: (_) => LoginScreen(),
         RegisterScreen.routeName: (_) => RegisterScreen(),
-        HomeScreen.routeName: (_) => HomeScreen()
+        HomeScreen.routeName: (_) => HomeScreen(),
+        SplashScreen.routeName: (_) => SplashScreen()
       },
-      initialRoute: LoginScreen.routeName,
+      initialRoute: SplashScreen.routeName,
     );
   }
 }

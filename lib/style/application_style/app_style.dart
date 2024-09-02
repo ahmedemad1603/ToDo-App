@@ -13,6 +13,18 @@ class AppStyle
         fontSize: 22,
         color: Colors.white,
         fontWeight: FontWeight.w700
+      ),
+      actionsIconTheme: const IconThemeData(
+        color: Colors.white
+      )
+    ),
+    floatingActionButtonTheme: FloatingActionButtonThemeData(
+      backgroundColor: lightPrimaryColor,
+      shape: const StadiumBorder(
+        side: BorderSide(
+          color: Colors.white,
+          width: 3
+        )
       )
     ),
     colorScheme: ColorScheme.fromSeed(
@@ -22,6 +34,6 @@ class AppStyle
     textTheme: const TextTheme(
       labelSmall: TextStyle(color: Colors.white, fontSize: 15)
     ),
-    useMaterial3: true,
+    useMaterial3: false,
   );
 }
