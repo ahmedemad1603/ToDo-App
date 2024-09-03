@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_app/auth_provider.dart';
-import 'package:todo_app/model/task.dart';
+import 'package:todo_app/model/Task.dart';
 import 'package:todo_app/model/task_collection.dart';
 import 'package:todo_app/style/application_style/app_style.dart';
 import 'package:todo_app/style/dialogue_utils/dialogue_utils.dart';
@@ -28,8 +28,6 @@ class _AddTaskSheetState extends State<AddTaskSheet> {
   Widget build(BuildContext context)
   {
     double height = MediaQuery.of(context).size.height;
-    double width = MediaQuery.of(context).size.width;
-
     return Form(
       key: formKey,
       child: Padding(

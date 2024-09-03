@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:todo_app/model/task.dart';
-import 'package:todo_app/model/user.dart';
+import 'package:todo_app/model/Task.dart';
 import 'package:todo_app/model/user_collection.dart';
 
 class TaskCollection
@@ -25,4 +24,19 @@ class TaskCollection
     newTask.id = docRef.id;
     await docRef.set(newTask);
   }
+
+  static Future<List<Task>> getTasks(String userId)async{
+    var collectionRef = getTaskCollection(userId);
+    var snapshot = await collectionRef.get();
+    List<Task> tasks = snapshot.docs.map((snapshot) => snapshot.data()).toList();
+    return tasks;
+  }
+
+  static Future<void> deleteTask(String userId, String taskId) async
+  {
+    var collectionRef = getTaskCollection(userId);
+    var docRef = collectionRef.doc(taskId);
+    await docRef.delete();
+  }
+
 }
