@@ -1,5 +1,6 @@
 class User
 {
+  static const String collectionName = "User";
   String? id;
   String? fullname;
   String? email;
