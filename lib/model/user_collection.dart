@@ -22,12 +22,10 @@ class UserCollection
     return userCollectionReference.doc(userId).set(user);
   }
 
-  static Future<User?> getUser(String userId) async
-  {
-    var document = getUserCollectionReference().doc(userId);
-    var snapshot = await document.get();
-    User? user = snapshot.data();
-    return user;
+  static Future<User?> getUser(String userid)async{
+    var userCollectionReference = getUserCollectionReference();
+    var snapshot = await userCollectionReference.doc(userid).get();
+    return snapshot.data();
   }
   
 }

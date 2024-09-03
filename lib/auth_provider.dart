@@ -1,7 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:todo_app/model/task_collection.dart';
 import 'package:todo_app/model/user_collection.dart';
 import 'package:todo_app/model/user.dart' as MyUser;
+import 'model/Task.dart';
 
 class AuthUserProvider extends ChangeNotifier
 {
@@ -20,4 +22,11 @@ class AuthUserProvider extends ChangeNotifier
     firebaseUser = FirebaseAuth.instance.currentUser;
     databaseUser = await UserCollection.getUser(firebaseUser?.uid??"");
   }
+
+  List<Task> tasksList = [];
+  refreshTasks() async
+  {
+    tasksList = await TaskCollection.getTasks(firebaseUser!.uid);
+  }
+
 }

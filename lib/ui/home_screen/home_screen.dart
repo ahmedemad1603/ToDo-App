@@ -1,5 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:todo_app/auth_provider.dart';
 import 'package:todo_app/ui/home_screen/tabs/settings_tab.dart';
 import 'package:todo_app/ui/home_screen/tabs/tasks_tab.dart';
 import 'package:todo_app/ui/home_screen/widgets/add_task_sheet.dart';
@@ -24,6 +26,14 @@ class _HomeScreenState extends State<HomeScreen> {
   int currentIndex = 0;
 
   @override
+  void initState()
+  {
+    // TODO: implement initState
+    super.initState();
+    Provider.of<AuthUserProvider>(context, listen: false).refreshTasks();
+  }
+
+  @override
   Widget build(BuildContext context)
   {
     return Scaffold(
@@ -40,14 +50,9 @@ class _HomeScreenState extends State<HomeScreen> {
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-
+          showAddTaskBottomSheet();
         },
-        child: IconButton(
-          onPressed: () {
-            showAddTaskBottomSheet();
-          },
-          icon: const Icon(Icons.add, color: Colors.white),
-        ),
+        child: const Icon(Icons.add, color: Colors.white)
       ),
       bottomNavigationBar: BottomAppBar(
         notchMargin: 10,
@@ -59,8 +64,9 @@ class _HomeScreenState extends State<HomeScreen> {
           elevation: 0,
           currentIndex: currentIndex,
           onTap: (newIndex) {
+            currentIndex = newIndex;
             setState(() {
-              currentIndex = newIndex;
+
             });
           },
           items: const [
