@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_app/auth_provider.dart';
-import 'package:todo_app/firebase/firestore_helper.dart';
+import 'package:todo_app/model/user_collection.dart';
 import 'package:todo_app/style/dialogue_utils/dialogue_utils.dart';
 import 'package:todo_app/ui/home_screen/home_screen.dart';
 import 'package:todo_app/ui/register_screen/register_screen.dart';
@@ -138,7 +138,7 @@ class _LoginScreenState extends State<LoginScreen> {
             password: passwordController.text
         );
 
-        MyUser.User? user = await FirestoreHelper.getUser(credential.user!.uid);
+        MyUser.User? user = await UserCollection.getUser(credential.user!.uid);
 
         provider.setUser(credential.user!, user!);
 

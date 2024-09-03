@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 class AppStyle
 {
   static Color lightPrimaryColor = const Color(0xff5D9CEC);
+  static Color lightTextColor = const Color(0xff383838);
 
   static ThemeData lightTheme = ThemeData(
     scaffoldBackgroundColor: const Color(0xffDFECDB),

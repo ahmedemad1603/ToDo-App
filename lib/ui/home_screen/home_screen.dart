@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:todo_app/ui/home_screen/tabs/settings_tab.dart';
 import 'package:todo_app/ui/home_screen/tabs/tasks_tab.dart';
+import 'package:todo_app/ui/home_screen/widgets/add_task_sheet.dart';
 import 'package:todo_app/ui/login_screen/login_screen.dart';
 
 class HomeScreen extends StatefulWidget
@@ -43,7 +44,7 @@ class _HomeScreenState extends State<HomeScreen> {
         },
         child: IconButton(
           onPressed: () {
-
+            showAddTaskBottomSheet();
           },
           icon: const Icon(Icons.add, color: Colors.white),
         ),
@@ -77,6 +78,15 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
       body: tabs[currentIndex],
+    );
+  }
+
+  void showAddTaskBottomSheet()
+  {
+    showModalBottomSheet(
+        context: context,
+        builder: (context) => AddTaskSheet(),
+        isScrollControlled: true
     );
   }
 }
