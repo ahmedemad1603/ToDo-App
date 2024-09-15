@@ -26,16 +26,19 @@ class TaskCollection
   }
 
   // Using Stream Builder of firestore
-  /*
-  static Stream<List<Task>> getTaskListen(String userId) async*
+  static Stream<List<Task>> getTaskListen(String userId, DateTime date) async*
   {
     var collectionRef = getTaskCollection(userId);
-    var snapshots = collectionRef.snapshots();
+    var snapshots = collectionRef.where(
+      "date",
+      isGreaterThanOrEqualTo: Timestamp.fromMillisecondsSinceEpoch(date.millisecondsSinceEpoch),
+      isLessThan: Timestamp.fromMillisecondsSinceEpoch(date.add(Duration(days: 1)).millisecondsSinceEpoch)
+    ).snapshots();
     var queryDocListStream = snapshots.map((snapshotOfTask) => snapshotOfTask.docs);
     var tasksStream = queryDocListStream.map((documents) => documents.map((doc) => doc.data()).toList());
     yield* tasksStream;
   }
-  */
+
 
   static Future<List<Task>> getTasks(String userId)async{
     var collectionRef = getTaskCollection(userId);

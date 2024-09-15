@@ -9,7 +9,7 @@ class AppStyle
     scaffoldBackgroundColor: const Color(0xffDFECDB),
     appBarTheme: AppBarTheme(
       color: lightPrimaryColor,
-      toolbarHeight: 110,
+      elevation: 0,
       titleTextStyle: const TextStyle(
         fontSize: 22,
         color: Colors.white,
