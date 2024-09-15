@@ -6,12 +6,17 @@ import 'package:todo_app/auth_provider.dart';
 import 'package:todo_app/ui/home_screen/home_screen.dart';
 import 'package:todo_app/ui/login_screen/login_screen.dart';
 
-class SplashScreen extends StatelessWidget
+class SplashScreen extends StatefulWidget
 {
   static const String routeName = "SplashScreen";
 
   const SplashScreen({super.key});
 
+  @override
+  State<SplashScreen> createState() => _SplashScreenState();
+}
+
+class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context)
   {
@@ -23,7 +28,10 @@ class SplashScreen extends StatelessWidget
       }
       else{
         await provider.retrieveUser();
-        Navigator.pushReplacementNamed(context, HomeScreen.routeName);
+        if(mounted)
+          {
+            Navigator.pushReplacementNamed(context, HomeScreen.routeName);
+          }
       }
 
     });

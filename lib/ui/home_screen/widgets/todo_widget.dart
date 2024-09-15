@@ -6,6 +6,7 @@ import 'package:todo_app/model/task_collection.dart';
 import 'package:todo_app/style/dialogue_utils/dialogue_utils.dart';
 
 import '../../../model/Task.dart';
+import '../../../todo_provider.dart';
 
 class ToDoWidget extends StatefulWidget
 {
@@ -98,6 +99,7 @@ class _ToDoWidgetState extends State<ToDoWidget> {
 
   deleteTask()
   {
+    ToDoProvider toDoProvider = Provider.of<ToDoProvider>(context, listen: false);
     var provider = Provider.of<AuthUserProvider>(context, listen: false);
     DialogueUtils.showConfirmationDialogue(
         context,
@@ -107,6 +109,7 @@ class _ToDoWidgetState extends State<ToDoWidget> {
           DialogueUtils.showLoadingDialogue(context);
           await TaskCollection.deleteTask(provider.firebaseUser!.uid, widget.task.id??"");
           Navigator.pop(context);
+          toDoProvider.refreshTasks(provider.firebaseUser!.uid);
         },
         onNegativePress: (){
           Navigator.pop(context);

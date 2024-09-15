@@ -1,7 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_app/auth_provider.dart';
 import 'package:todo_app/style/application_style/app_style.dart';
+import 'package:todo_app/todo_provider.dart';
 import 'package:todo_app/ui/home_screen/home_screen.dart';
 import 'package:todo_app/ui/login_screen/login_screen.dart';
 import 'package:todo_app/ui/register_screen/register_screen.dart';
@@ -15,9 +17,12 @@ void main() async
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(ChangeNotifierProvider(
-      create: (context) => AuthUserProvider(),
-      child: const MyApp())
+  runApp(MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => AuthUserProvider()),
+        ChangeNotifierProvider(create: (context) => ToDoProvider())
+      ],
+      child: const MyApp()),
   );
 }
 
