@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_app/auth_provider.dart';
+import 'package:todo_app/todo_provider.dart';
 import 'package:todo_app/ui/home_screen/tabs/settings_tab.dart';
 import 'package:todo_app/ui/home_screen/tabs/tasks_tab.dart';
 import 'package:todo_app/ui/home_screen/widgets/add_task_sheet.dart';
@@ -30,7 +31,9 @@ class _HomeScreenState extends State<HomeScreen> {
   {
     // TODO: implement initState
     super.initState();
-    Provider.of<AuthUserProvider>(context, listen: false).refreshTasks();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      Provider.of<ToDoProvider>(context, listen: false).refreshTasks(Provider.of<AuthUserProvider>(context, listen: false).firebaseUser!.uid);
+    });
   }
 
   @override

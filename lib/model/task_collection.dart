@@ -25,6 +25,18 @@ class TaskCollection
     await docRef.set(newTask);
   }
 
+  // Using Stream Builder of firestore
+  /*
+  static Stream<List<Task>> getTaskListen(String userId) async*
+  {
+    var collectionRef = getTaskCollection(userId);
+    var snapshots = collectionRef.snapshots();
+    var queryDocListStream = snapshots.map((snapshotOfTask) => snapshotOfTask.docs);
+    var tasksStream = queryDocListStream.map((documents) => documents.map((doc) => doc.data()).toList());
+    yield* tasksStream;
+  }
+  */
+
   static Future<List<Task>> getTasks(String userId)async{
     var collectionRef = getTaskCollection(userId);
     var snapshot = await collectionRef.get();

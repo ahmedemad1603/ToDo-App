@@ -8,6 +8,7 @@ import 'package:todo_app/model/task_collection.dart';
 import 'package:todo_app/style/application_style/app_style.dart';
 import 'package:todo_app/style/dialogue_utils/dialogue_utils.dart';
 import 'package:todo_app/style/reusable_components/custom_form_field.dart';
+import 'package:todo_app/todo_provider.dart';
 
 class AddTaskSheet extends StatefulWidget
 {
@@ -86,23 +87,28 @@ class _AddTaskSheetState extends State<AddTaskSheet> {
 
   addTask() async
   {
-    DialogueUtils.showLoadingDialogue(context);
-    AuthUserProvider authProvider = Provider.of<AuthUserProvider>(context, listen: false);
-    await TaskCollection.createTask(
-        Task(
-          title: titleController.text,
-          date: Timestamp.fromMillisecondsSinceEpoch(selectedDate.millisecondsSinceEpoch)
-        ), 
-        authProvider.firebaseUser!.uid
-    );
-    Navigator.pop(context);
-    DialogueUtils.showMessageDialogue(
-        context,
-        message: "Task is added successfully",
-        onPress: () {
-          Navigator.pop(context);
-          Navigator.pop(context);
-        },);
+    ToDoProvider provider = Provider.of<ToDoProvider>(context, listen: false);
+    if(formKey.currentState?.validate()??false)
+      {
+        DialogueUtils.showLoadingDialogue(context);
+        AuthUserProvider authProvider = Provider.of<AuthUserProvider>(context, listen: false);
+        await TaskCollection.createTask(
+            Task(
+                title: titleController.text,
+                date: Timestamp.fromMillisecondsSinceEpoch(selectedDate.millisecondsSinceEpoch)
+            ),
+            authProvider.firebaseUser!.uid
+        );
+        Navigator.pop(context);
+        DialogueUtils.showMessageDialogue(
+          context,
+          message: "Task is added successfully",
+          onPress: () {
+            Navigator.pop(context);
+            Navigator.pop(context);
+          },);
+        provider.refreshTasks(authProvider.firebaseUser!.uid);
+      }
   }
 
   showDateCalendar() async
