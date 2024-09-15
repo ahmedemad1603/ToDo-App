@@ -99,17 +99,19 @@ class _ToDoWidgetState extends State<ToDoWidget> {
 
   deleteTask()
   {
-    ToDoProvider toDoProvider = Provider.of<ToDoProvider>(context, listen: false);
+    // ToDoProvider toDoProvider = Provider.of<ToDoProvider>(context, listen: false);
     var provider = Provider.of<AuthUserProvider>(context, listen: false);
-    DialogueUtils.showConfirmationDialogue(
-        context,
+    DialogueUtils.showConfirmationDialog(context: context,
         message: "Are you sure you want to delete the task?",
         onPositivePress: () async {
           Navigator.pop(context);
-          DialogueUtils.showLoadingDialogue(context);
+          // DialogueUtils.showLoadingDialogue(context);
           await TaskCollection.deleteTask(provider.firebaseUser!.uid, widget.task.id??"");
-          Navigator.pop(context);
-          toDoProvider.refreshTasks(provider.firebaseUser!.uid);
+          // if(mounted)
+          //   {
+          //     Navigator.pop(context);
+          //   }
+          // toDoProvider.refreshTasks(provider.firebaseUser!.uid);
         },
         onNegativePress: (){
           Navigator.pop(context);

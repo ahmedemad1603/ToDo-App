@@ -87,7 +87,7 @@ class _AddTaskSheetState extends State<AddTaskSheet> {
 
   addTask() async
   {
-    ToDoProvider provider = Provider.of<ToDoProvider>(context, listen: false);
+    // ToDoProvider provider = Provider.of<ToDoProvider>(context, listen: false);
     if(formKey.currentState?.validate()??false)
       {
         DialogueUtils.showLoadingDialogue(context);
@@ -107,7 +107,7 @@ class _AddTaskSheetState extends State<AddTaskSheet> {
             Navigator.pop(context);
             Navigator.pop(context);
           },);
-        provider.refreshTasks(authProvider.firebaseUser!.uid);
+        // provider.refreshTasks(authProvider.firebaseUser!.uid);
       }
   }
 

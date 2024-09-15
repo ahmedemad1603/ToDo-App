@@ -20,7 +20,7 @@ class HomeScreen extends StatefulWidget
 
 class _HomeScreenState extends State<HomeScreen> {
   List<Widget> tabs = [
-    const TasksTab(),
+    TasksTab(),
     const SettingsTab()
   ];
 
@@ -31,9 +31,9 @@ class _HomeScreenState extends State<HomeScreen> {
   {
     // TODO: implement initState
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      Provider.of<ToDoProvider>(context, listen: false).refreshTasks(Provider.of<AuthUserProvider>(context, listen: false).firebaseUser!.uid);
-    });
+    // WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+    //   Provider.of<ToDoProvider>(context, listen: false).refreshTasks(Provider.of<AuthUserProvider>(context, listen: false).firebaseUser!.uid);
+    // });
   }
 
   @override
